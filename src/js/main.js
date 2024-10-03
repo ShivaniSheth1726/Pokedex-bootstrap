@@ -14,6 +14,13 @@ renderPokemon(shuffle(data));
 function renderPokemon(list) {
   dataRow.textContent = "";
 
+  if (list.length === 0) {
+    const noResultsMessage = document.createElement("div");
+    noResultsMessage.textContent = "No results found.";
+    dataRow.appendChild(noResultsMessage);
+    return;
+  }
+
   list.forEach((pokemonObj) => {
     PokemonCard(pokemonObj);
   });

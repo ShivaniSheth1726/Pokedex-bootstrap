@@ -1,24 +1,42 @@
 import data from "./data";
+import shuffle from "array-shuffle";
 
-// === DOM Selection ===
+// Component
+import PokemonCard from "./components/pokemonCard";
+
+// === DOM Targeting ===
+const inputEl = document.querySelector('input[type="text"]');
 const dataRow = document.querySelector("[data-row]");
 
-data.forEach(Pokemon);
+renderPokemon(shuffle(data));
 
-function Pokemon(data) {
-  const div = document.createElement("div");
-  div.classList.add("col");
-  div.innerHTML = `<div class="card">
-      <img
-          src="${data.image}"
-          class="card-img-top"
-          alt="${data.name}"
-      />
-      <div class="card-body">
-          <h5 class="card-title">${data.name}</h5>
-          <p class="card-text">${data.description}</p>
-          <a href="${data.link}" class="btn btn-warning">Visit</a>
-      </div>
-      </div>`;
-  dataRow.appendChild(div);
+// Give list, it will render them
+function renderPokemon(list) {
+  dataRow.textContent = "";
+
+  list.forEach((pokemonObj) => {
+    PokemonCard(pokemonObj);
+  });
 }
+
+function handleSearch(input) {
+  const filteredPokemon = data.filter((pokemonObj) =>
+    pokemonObj.name.toLowerCase().includes(input)
+  );
+
+  renderPokemon(filteredPokemon);
+}
+
+inputEl.addEventListener("input", (e) => {
+  const currentInput = e.target.value.trim().toLowerCase();
+  handleSearch(currentInput);
+});
+
+// Add / to active search
+document.addEventListener("keydown", (e) => {
+  if (e.key === "/") {
+    // Don't type
+    e.preventDefault();
+    inputEl.focus();
+  }
+});

@@ -1,7 +1,8 @@
-import data from "./data";
+// node imports
 import shuffle from "array-shuffle";
-
-// Component
+// data imports 
+import data from "./data.json";
+// Component imports
 import PokemonCard from "./components/PokemonCard";
 
 // === DOM Targeting ===
@@ -22,19 +23,23 @@ function renderPokemon(list) {
   }
 // to iterate and show each element
   list.forEach((pokemonObj) => {
-    PokemonCard(pokemonObj);
+    const pokemon=PokemonCard(pokemonObj);
+    dataRow.appendChild(pokemon);
   });
 }
 // Apply search functionality in bothcase
 function handleSearch(input) {
-  const filteredPokemon = data.filter((pokemonObj) =>
-    pokemonObj.name.toLowerCase().includes(input)
-  );
+  const filteredPokemon = data.filter((pokemonObj) =>{
+   return pokemonObj.name.toLowerCase().includes(input)
+});
 
   renderPokemon(filteredPokemon);
 }
 
 inputEl.addEventListener("input", (e) => {
+  // console.log(e); //log the key pressed 
+  // console.log('hey'); //log the word when key pressed
+  
   const currentInput = e.target.value.trim().toLowerCase();
   handleSearch(currentInput);
 });
